@@ -41,7 +41,7 @@ export function Board(props: { puzzle: number[] }) {
 
   return (
     <div
-      className="grid grid-cols-9 grid-rows-9 border-4 border-black select-none"
+      className="grid grid-cols-9 grid-rows-9 border-2 border-black select-none focus:outline-none"
       onKeyDown={onKeyDown}
       tabIndex={0}
     >
@@ -89,8 +89,9 @@ function Cell(props: {
   const c = clsx({
     "bg-yellow-400": focus && editable,
     "bg-zinc-400": focus && !editable,
-    "bg-zinc-200": !focus && !editable,
+    "bg-zinc-100": !focus && !editable,
     "text-red-600": invalid,
+    "cursor-pointer ": editable,
   });
 
   return (
