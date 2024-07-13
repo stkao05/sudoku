@@ -1,6 +1,5 @@
 "use client";
-import { group } from "console";
-import { useState, KeyboardEvent } from "react";
+import { KeyboardEvent, useState } from "react";
 
 const EMPTY = 0;
 
@@ -15,33 +14,35 @@ export function Board(props: { puzzle: number[] }) {
   const isEditable = (index: number) => props.puzzle[index] === EMPTY;
 
   const onKeyDown = (event: KeyboardEvent) => {
-    if (focusIdx === -1 || !isEditable(focusIdx)) {
-      return;
+    const nextIdx = arrowNavigation(focusIdx, event.key);
+    if (nextIdx !== null) {
+      setFocusIdx(nextIdx);
     }
 
-    if (event.key === "Backspace") {
-      const b = [...board];
-      b[focusIdx] = 0;
-      setBoard(b);
-      return;
-    }
+    if (focusIdx !== -1 && isEditable(focusIdx)) {
+      if (event.key === "Backspace") {
+        const b = [...board];
+        b[focusIdx] = 0;
+        setBoard(b);
+        return;
+      }
 
-    if (/[1-9]/.test(event.key)) {
-      const b = [...board];
-      b[focusIdx] = parseInt(event.key);
-      setBoard(b);
-      return;
+      if (/[1-9]/.test(event.key)) {
+        const b = [...board];
+        b[focusIdx] = parseInt(event.key);
+        setBoard(b);
+        return;
+      }
     }
   };
 
   const invalidIdxs = validate(board);
-  console.log(invalidIdxs);
 
   return (
     <div
-      className="grid grid-cols-9 grid-rows-9"
+      className="grid grid-cols-9 grid-rows-9 border-4 border-black select-none"
       onKeyDown={onKeyDown}
-      tabIndex={-1}
+      tabIndex={0}
     >
       {board.map((value, idx) => {
         return (
@@ -69,13 +70,36 @@ function Cell(props: {
   onClick: (index: number) => void;
 }) {
   const { index, value, focus, invalid, editable, onClick } = props;
+
+  let cls = "";
+  const rb = [
+    2, 11, 20, 29, 38, 47, 56, 65, 74, 5, 14, 23, 32, 41, 50, 59, 68, 77,
+  ];
+  const bb = [
+    18, 19, 20, 21, 22, 23, 24, 25, 26, 45, 46, 47, 48, 49, 50, 51, 52, 53,
+  ];
+  if (rb.includes(index)) {
+    cls += " border-r-4";
+  }
+  if (bb.includes(index)) {
+    cls += " border-b-4";
+  }
+
+  if (focus) {
+    cls += " bg-yellow-400";
+  }
+
+  if (invalid) {
+    cls += " bg-red-300";
+  }
+
+  if (!editable) {
+    cls += " bg-zinc-200";
+  }
+
   return (
     <div
-      className={`w-14 h-14 overflow-hidden flex justify-center items-center outline-1 outline-zinc-400 outline ${
-        focus && "bg-yellow-400 bg-opacity-20"
-      } ${!editable && "bg-zinc-200"}
-      ${invalid && "bg-red-300"}
-      `}
+      className={`w-14 h-14 overflow-hidden font-bold text-2xl flex justify-center items-center border border-zinc-400 ${cls}`}
       onClick={() => onClick(index)}
     >
       {value === EMPTY ? null : value}
@@ -154,4 +178,20 @@ function validateGroup(board: number[], indexes: number[]) {
   }
 
   return invalidIdx;
+}
+
+function arrowNavigation(idx: number, eventKey: string) {
+  if (idx === -1) return null;
+  switch (eventKey) {
+    case "ArrowRight":
+      return idx % 9 === 8 ? idx : idx + 1;
+    case "ArrowLeft":
+      return idx % 9 === 0 ? idx : idx - 1;
+    case "ArrowDown":
+      return idx + 9 >= 81 ? idx : idx + 9;
+    case "ArrowUp":
+      return idx - 9 < 0 ? idx : idx - 9;
+    default:
+      return null;
+  }
 }
