@@ -38,26 +38,32 @@ export function Board(props: { puzzle: number[] }) {
   };
 
   const invalidIdxs = validate(board);
+  const completed = !board.includes(EMPTY) && invalidIdxs.size === 0;
 
   return (
-    <div
-      className="grid grid-cols-9 grid-rows-9 border-2 border-black select-none focus:outline-none"
-      onKeyDown={onKeyDown}
-      tabIndex={0}
-    >
-      {board.map((value, idx) => {
-        return (
-          <Cell
-            key={idx}
-            index={idx}
-            value={value}
-            focus={idx == focusIdx}
-            invalid={invalidIdxs.has(idx)}
-            editable={isEditable(idx)}
-            onClick={onCellClick}
-          />
-        );
-      })}
+    <div>
+      <div
+        className="grid grid-cols-9 grid-rows-9 border-2 border-black select-none focus:outline-none"
+        onKeyDown={onKeyDown}
+        tabIndex={0}
+      >
+        {board.map((value, idx) => {
+          return (
+            <Cell
+              key={idx}
+              index={idx}
+              value={value}
+              focus={idx == focusIdx}
+              invalid={invalidIdxs.has(idx)}
+              editable={isEditable(idx)}
+              onClick={onCellClick}
+            />
+          );
+        })}
+      </div>
+      <div className="text-center mt-2">
+        {!completed && "🎉 You have completed the puzzle! 🎉 "}
+      </div>
     </div>
   );
 }
@@ -88,8 +94,8 @@ function Cell(props: {
 
   const c = clsx({
     "bg-yellow-400": focus && editable,
-    "bg-zinc-400": focus && !editable,
-    "bg-zinc-100": !focus && !editable,
+    "bg-[#D6AF14]": focus && !editable,
+    "bg-zinc-200": !focus && !editable,
     "text-red-600": invalid,
     "cursor-pointer ": editable,
   });
@@ -105,9 +111,9 @@ function Cell(props: {
 }
 
 /**
- * @returns {Set<number>} a set of cell index of which it contains invalid value
+ * @returns a set of cell index of which it contains invalid value
  */
-function validate(board: number[]) {
+function validate(board: number[]): Set<number> {
   const groups = [];
 
   // horizonal groups
@@ -141,13 +147,13 @@ function validate(board: number[]) {
     }
   }
 
-  let invalidIdxs = new Set();
+  let invalidIdx = new Set<number>();
   for (const group of groups) {
     const invalid = validateGroup(board, group);
-    invalidIdxs = invalidIdxs.union(invalid);
+    invalidIdx = invalidIdx.union(invalid);
   }
 
-  return invalidIdxs;
+  return invalidIdx;
 }
 
 /**
@@ -155,7 +161,7 @@ function validate(board: number[]) {
  * @param indexes
  * @returns
  */
-function validateGroup(board: number[], indexes: number[]) {
+function validateGroup(board: number[], indexes: number[]): Set<number> {
   const count: { [val: number]: number } = {};
   for (let idx of indexes) {
     const val = board[idx];
@@ -167,7 +173,7 @@ function validateGroup(board: number[], indexes: number[]) {
     count[val] += 1;
   }
 
-  const invalidIdx = new Set();
+  const invalidIdx = new Set<number>();
   for (let idx of indexes) {
     if (count[board[idx]] > 1) {
       invalidIdx.add(idx);
