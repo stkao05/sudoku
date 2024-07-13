@@ -1,5 +1,6 @@
 "use client";
 import { KeyboardEvent, useState } from "react";
+import clsx from "clsx";
 
 const EMPTY = 0;
 
@@ -85,21 +86,16 @@ function Cell(props: {
     cls += " border-b-4";
   }
 
-  if (focus) {
-    cls += " bg-yellow-400";
-  }
-
-  if (invalid) {
-    cls += " bg-red-300";
-  }
-
-  if (!editable) {
-    cls += " bg-zinc-200";
-  }
+  const c = clsx({
+    "bg-yellow-400": focus && editable,
+    "bg-zinc-400": focus && !editable,
+    "bg-zinc-200": !focus && !editable,
+    "text-red-600": invalid,
+  });
 
   return (
     <div
-      className={`w-14 h-14 overflow-hidden font-bold text-2xl flex justify-center items-center border border-zinc-400 ${cls}`}
+      className={`w-14 h-14 overflow-hidden font-semibold text-xl flex justify-center items-center border border-zinc-400 ${cls} ${c}`}
       onClick={() => onClick(index)}
     >
       {value === EMPTY ? null : value}
