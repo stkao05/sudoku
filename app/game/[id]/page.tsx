@@ -1,5 +1,5 @@
 import { createClient } from "@/services/supabase";
-import { Board } from "@/app/board";
+import { Board } from "@/app/game/[id]/board";
 
 export default async function Game(props: { params: { id: string } }) {
   const supabase = createClient();

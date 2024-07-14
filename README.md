@@ -1,3 +1,11 @@
+# Sudoku 
+
+## Setup
+
+Setup environmental variable
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
 ## Features
 
 - Arrow key accessibility
