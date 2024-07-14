@@ -14,11 +14,7 @@ export default async function Game(props: { params: { id: string } }) {
     .single();
 
   const puzzle = parsePuzzleString(data.puzzle);
-  return (
-    <main className="flex justify-center pt-4">
-      <Board puzzle={puzzle} />
-    </main>
-  );
+  return <Board puzzle={puzzle} />;
 }
 
 const EMPTY = 0;

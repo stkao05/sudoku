@@ -43,7 +43,7 @@ export function Board(props: { puzzle: number[] }) {
   return (
     <div>
       <div
-        className="grid grid-cols-9 grid-rows-9 border-2 border-black select-none focus:outline-none"
+        className="grid grid-cols-9 grid-rows-9 w-[550px] h-[550px] border-2 border-black select-none focus:outline-none"
         onKeyDown={onKeyDown}
         tabIndex={0}
       >
@@ -62,7 +62,7 @@ export function Board(props: { puzzle: number[] }) {
         })}
       </div>
       <div className="text-center mt-2">
-        {completed && "You have completed the puzzle! 🎉 "}
+        {completed && "Congrat! You have completed the puzzle ✅"}
       </div>
     </div>
   );
@@ -102,7 +102,7 @@ function Cell(props: {
 
   return (
     <div
-      className={`w-14 h-14 overflow-hidden font-semibold text-xl flex justify-center items-center border-r border-b border-neutral-300 ${c} ${cls}`}
+      className={`overflow-hidden font-semibold text-xl flex justify-center items-center border-r border-b border-neutral-300 ${c} ${cls}`}
       onClick={() => onClick(index)}
     >
       {value === EMPTY ? null : value}
