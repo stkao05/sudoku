@@ -8,21 +8,24 @@ export default async function Home() {
   if (!puzzles) return null;
 
   return (
-    <main className="flex flex-col items-center justify-center pt-10">
-      <h1 className="font-extrabold text-3xl mb-4">Suduko</h1>
-      <div className="mb-2">Choose game</div>
-      <div className="border border-zinc-200">
-        {puzzles.map((p) => {
-          return (
-            <a
-              className="block border-b border-zinc-200 p-2 hover:bg-yellow-300"
-              key={p.id}
-              href={`/game/${p.id}`}
-            >
-              {p.id.substring(0, 8)}
-            </a>
-          );
-        })}
+    <main className="flex flex-col items-center justify-center">
+      <div className="w-[500px] pt-10">
+        <h1 className="font-medium text-2xl pb-1 mb-4 border-b border-neutral-200">
+          Suduko
+        </h1>
+        <div className="border border-neutral-200">
+          {puzzles.map((p) => {
+            return (
+              <a
+                className="block border-b border-neutral-200 p-2 hover:bg-neutral-100"
+                key={p.id}
+                href={`/game/${p.id}`}
+              >
+                {p.id.substring(0, 8)}
+              </a>
+            );
+          })}
+        </div>
       </div>
     </main>
   );

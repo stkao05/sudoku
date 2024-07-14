@@ -62,7 +62,7 @@ export function Board(props: { puzzle: number[] }) {
         })}
       </div>
       <div className="text-center mt-2">
-        {!completed && "🎉 You have completed the puzzle! 🎉 "}
+        {completed && "You have completed the puzzle! 🎉 "}
       </div>
     </div>
   );
@@ -86,23 +86,23 @@ function Cell(props: {
     18, 19, 20, 21, 22, 23, 24, 25, 26, 45, 46, 47, 48, 49, 50, 51, 52, 53,
   ];
   if (rb.includes(index)) {
-    cls += " border-r-4";
+    cls += " border-r-2 border-r-black";
   }
   if (bb.includes(index)) {
-    cls += " border-b-4";
+    cls += " border-b-2 border-b-black";
   }
 
   const c = clsx({
     "bg-yellow-400": focus && editable,
     "bg-[#D6AF14]": focus && !editable,
-    "bg-zinc-200": !focus && !editable,
+    "bg-neutral-100": !focus && !editable,
     "text-red-600": invalid,
     "cursor-pointer ": editable,
   });
 
   return (
     <div
-      className={`w-14 h-14 overflow-hidden font-semibold text-xl flex justify-center items-center border border-zinc-400 ${cls} ${c}`}
+      className={`w-14 h-14 overflow-hidden font-semibold text-xl flex justify-center items-center border-r border-b border-neutral-300 ${c} ${cls}`}
       onClick={() => onClick(index)}
     >
       {value === EMPTY ? null : value}
@@ -184,6 +184,7 @@ function validateGroup(board: number[], indexes: number[]): Set<number> {
 }
 
 function arrowNavigation(idx: number, eventKey: string) {
+  console.log(eventKey);
   if (idx === -1) return null;
   switch (eventKey) {
     case "ArrowRight":
@@ -194,6 +195,8 @@ function arrowNavigation(idx: number, eventKey: string) {
       return idx + 9 >= 81 ? idx : idx + 9;
     case "ArrowUp":
       return idx - 9 < 0 ? idx : idx - 9;
+    case "Escape":
+      return -1;
     default:
       return null;
   }
