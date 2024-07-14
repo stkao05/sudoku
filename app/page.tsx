@@ -1,10 +1,8 @@
 import { createClient } from "@/services/supabase";
-import { cookies } from "next/headers";
 import Link from "next/link";
 
 export default async function Home() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
   const { data: puzzles } = await supabase.from("sudoku_puzzles").select("id");
   if (!puzzles) {
     return <div>no data</div>;

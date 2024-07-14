@@ -1,10 +1,8 @@
 import { createClient } from "@/services/supabase";
-import { cookies } from "next/headers";
 import { Board } from "@/app/board";
 
 export default async function Game(props: { params: { id: string } }) {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
+  const supabase = createClient();
   const { id } = props.params;
   const { data } = await supabase
     .from("sudoku_puzzles")
@@ -12,6 +10,10 @@ export default async function Game(props: { params: { id: string } }) {
     .eq("id", id)
     .limit(1)
     .single();
+
+  if (!data) {
+    return <div>internal error</div>;
+  }
 
   const puzzle = parsePuzzleString(data.puzzle);
   return <Board puzzle={puzzle} />;
