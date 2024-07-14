@@ -150,7 +150,7 @@ function validate(board: number[]): Set<number> {
   let invalidIdx = new Set<number>();
   for (const group of groups) {
     const invalid = validateGroup(board, group);
-    invalidIdx = invalidIdx.union(invalid);
+    invalid.forEach((idx) => invalidIdx.add(idx));
   }
 
   return invalidIdx;

@@ -12,7 +12,7 @@ export default async function Game(props: { params: { id: string } }) {
     .single();
 
   if (!data) {
-    return <div>internal error</div>;
+    return <div>internal error: unable to fetch the puzzle record</div>;
   }
 
   const puzzle = parsePuzzleString(data.puzzle);
@@ -35,4 +35,10 @@ function parsePuzzleString(puzzle: string) {
   }
 
   return grid;
+}
+
+export async function generateStaticParams() {
+  const supabase = createClient();
+  const { data: puzzles } = await supabase.from("sudoku_puzzles").select("id");
+  return puzzles ? puzzles.map((p) => ({ id: p.id })) : [];
 }
