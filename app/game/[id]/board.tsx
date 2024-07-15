@@ -1,8 +1,7 @@
 "use client";
 import clsx from "clsx";
+import { EMPTY } from "@/services/sudoku";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
-
-const EMPTY = 0;
 
 export function Board(props: { id: string; puzzle: number[] }) {
   const [board, setBoard] = useBoardState(props.id, props.puzzle);
@@ -102,7 +101,7 @@ function Cell(props: {
       onClick={() => onClick(index)}
       value={value === EMPTY ? "" : value}
       readOnly={!editable}
-      onChange={() => {}}
+      onChange={() => {}} // stub method to clear up react warning; input change event will be handled by the parent (Board)
     ></input>
   );
 }

@@ -1,5 +1,6 @@
 import { createClient } from "@/services/supabase";
 import { Board } from "@/app/game/[id]/board";
+import { deserialize } from "@/services/sudoku";
 
 export default async function Game(props: { params: { id: string } }) {
   const supabase = createClient();
@@ -15,26 +16,8 @@ export default async function Game(props: { params: { id: string } }) {
     return <div>internal error: unable to fetch the puzzle record</div>;
   }
 
-  const puzzle = parsePuzzleString(data.puzzle);
+  const puzzle = deserialize(data.puzzle);
   return <Board id={data.id} puzzle={puzzle} />;
-}
-
-const EMPTY = 0;
-
-function parsePuzzleString(puzzle: string) {
-  if (!/^[1-9\.]{81}$/.test(puzzle)) {
-    throw new Error("invalid puzzle");
-  }
-
-  const grid: number[] = Array(81).fill(EMPTY);
-
-  for (let i = 0; i < 81; i++) {
-    const char = puzzle[i];
-    const val = char === "." ? EMPTY : parseInt(char, 10);
-    grid[i] = val;
-  }
-
-  return grid;
 }
 
 export async function generateStaticParams() {
