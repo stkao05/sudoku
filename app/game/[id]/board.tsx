@@ -106,7 +106,9 @@ function Cell(props: {
 }
 
 /**
- * @returns a set of cell index of which it contains invalid value
+ * check if every cell in the board satisfies the uniqueness
+ * constraint
+ * @returns a set of cell index of which it violate the constraint
  */
 function validate(board: number[]): Set<number> {
   const groups = [];
@@ -152,9 +154,8 @@ function validate(board: number[]): Set<number> {
 }
 
 /**
- * check if a cell group (could be either vertical,
- * horizontal or 3x3 group) satisfies the uniqueness
- * contraint
+ * check if a cell group (could be either vertical, horizontal or 3x3 group)
+ * satisfies the uniqueness contraint
  *
  * @param board current board state
  * @param indexes an array of size 9, containing cell index of a group
