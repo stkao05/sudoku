@@ -8,7 +8,8 @@ Configure the following environmental variable
 
 ## Features
 
-- Arrow key accessibility
+- Arrow key navigation
+- Progress is automatically save within
 
 ## Improvement
 

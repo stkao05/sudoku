@@ -203,20 +203,24 @@ function arrowNavigation(idx: number, eventKey: string) {
 
 function useBoardState(id: string, puzzle: number[]) {
   const [board, setBoard] = useState(puzzle);
-  const loaded = useRef(false);
+  const loaded = useRef<string | null>(null); // loaded puzzle id
 
   useEffect(() => {
     if (loaded.current) return;
 
-    const bstr = localStorage.getItem(`game:${id}`);
+    if (loaded.current !== id) {
+      setBoard(puzzle);
+    }
+
+    const bstr = localStorage.getItem(`board:${id}`);
     if (!bstr) return;
 
     setBoard(JSON.parse(bstr));
-    loaded.current = true;
-  }, [id]);
+    loaded.current = id;
+  }, [id, puzzle]);
 
   useEffect(() => {
-    localStorage.setItem(`game:${id}`, JSON.stringify(board));
+    localStorage.setItem(`board:${id}`, JSON.stringify(board));
   }, [id, board]);
 
   return [board, setBoard] as const;

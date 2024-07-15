@@ -16,7 +16,7 @@ export default async function Game(props: { params: { id: string } }) {
   }
 
   const puzzle = parsePuzzleString(data.puzzle);
-  return <Board id={data.id} puzzle={puzzle} key={data.id} />;
+  return <Board id={data.id} puzzle={puzzle} />;
 }
 
 const EMPTY = 0;
