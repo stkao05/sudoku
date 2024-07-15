@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <main className="flex flex-col items-center justify-center">
           <div className="w-[550px] pt-10">
-            <h1 className="font-medium text-2xl pb-1 mb-4 border-b border-neutral-200">
+            <h1 className="font-medium text-2xl pb-1 mb-4">
               <Link href="/">Sudoko</Link>
             </h1>
             {children}

@@ -17,11 +17,9 @@ export default async function Home() {
 
   return (
     <>
-      <div className="mb-2">Choose game</div>
-      <div className="border border-neutral-200">
+      <div className="mb-2">Choose your game</div>
+      <div>
         {puzzles.map((p) => {
-          const lvCls = {};
-
           return (
             <Link
               className="flex justify-between border-b border-neutral-200 last:border-none p-2 hover:bg-neutral-100"
