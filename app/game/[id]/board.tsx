@@ -1,11 +1,11 @@
 "use client";
-import { KeyboardEvent, useState } from "react";
+import { KeyboardEvent, use, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 
 const EMPTY = 0;
 
-export function Board(props: { puzzle: number[] }) {
-  const [board, setBoard] = useState(props.puzzle);
+export function Board(props: { id: string; puzzle: number[] }) {
+  const [board, setBoard] = useBoardState(props.id, props.puzzle);
   const [focusIdx, setFocusIdx] = useState(-1);
 
   const onCellClick = (index: number) => {
@@ -184,7 +184,6 @@ function validateGroup(board: number[], indexes: number[]): Set<number> {
 }
 
 function arrowNavigation(idx: number, eventKey: string) {
-  console.log(eventKey);
   if (idx === -1) return null;
   switch (eventKey) {
     case "ArrowRight":
@@ -200,4 +199,25 @@ function arrowNavigation(idx: number, eventKey: string) {
     default:
       return null;
   }
+}
+
+function useBoardState(id: string, puzzle: number[]) {
+  const [board, setBoard] = useState(puzzle);
+  const loaded = useRef(false);
+
+  useEffect(() => {
+    if (loaded.current) return;
+
+    const bstr = localStorage.getItem(`game:${id}`);
+    if (!bstr) return;
+
+    setBoard(JSON.parse(bstr));
+    loaded.current = true;
+  }, [id]);
+
+  useEffect(() => {
+    localStorage.setItem(`game:${id}`, JSON.stringify(board));
+  }, [id, board]);
+
+  return [board, setBoard] as const;
 }
