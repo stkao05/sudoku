@@ -6,17 +6,14 @@ export default async function Home() {
   const supabase = createClient();
   const { data: puzzles } = await supabase
     .from("sudoku_puzzles")
-    .select("id,difficulty");
+    .select("id,difficulty")
+    .order("difficulty", { ascending: true });
 
   if (!puzzles) {
     return <div>no data</div>;
   }
 
-  const level = {
-    1: "easy",
-    2: "medium",
-    3: "hard",
-  };
+  const level = { 1: "easy", 2: "medium", 3: "hard" };
 
   return (
     <>
