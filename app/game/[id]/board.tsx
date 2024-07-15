@@ -78,35 +78,30 @@ function Cell(props: {
 }) {
   const { index, value, focus, invalid, editable, onClick } = props;
 
-  let cls = "";
-  const rb = [
+  // cells that should have the thick right & bottom border
+  const rightBorder = [
     2, 11, 20, 29, 38, 47, 56, 65, 74, 5, 14, 23, 32, 41, 50, 59, 68, 77,
   ];
-  const bb = [
+  const bottomBorder = [
     18, 19, 20, 21, 22, 23, 24, 25, 26, 45, 46, 47, 48, 49, 50, 51, 52, 53,
   ];
-  if (rb.includes(index)) {
-    cls += " border-r-2 border-r-black";
-  }
-  if (bb.includes(index)) {
-    cls += " border-b-2 border-b-black";
-  }
-
-  const c = clsx({
+  const cls = clsx({
     "bg-yellow-400": focus && editable,
     "bg-[#D6AF14]": focus && !editable,
     "bg-neutral-100": !focus && !editable,
     "text-red-600": invalid,
     "cursor-pointer ": editable,
+    "border-r-2 border-r-black": rightBorder.includes(index),
+    "border-b-2 border-b-black": bottomBorder.includes(index),
   });
 
   return (
-    <div
-      className={`overflow-hidden font-semibold text-xl flex justify-center items-center border-r border-b border-neutral-300 ${c} ${cls}`}
+    <input
+      type="text"
+      className={`appearance-none rounded-none font-semibold text-xl flex text-center justify-center items-center border-r border-b border-neutral-300 outline-none caret-transparent ${cls}`}
       onClick={() => onClick(index)}
-    >
-      {value === EMPTY ? null : value}
-    </div>
+      value={value === EMPTY ? "" : value}
+    ></input>
   );
 }
 
