@@ -1,6 +1,6 @@
 "use client";
-import { KeyboardEvent, use, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 const EMPTY = 0;
 
@@ -142,7 +142,7 @@ function validate(board: number[]): Set<number> {
     }
   }
 
-  let invalidIdx = new Set<number>();
+  const invalidIdx = new Set<number>();
   for (const group of groups) {
     const invalid = validateGroup(board, group);
     invalid.forEach((idx) => invalidIdx.add(idx));
@@ -152,9 +152,14 @@ function validate(board: number[]): Set<number> {
 }
 
 /**
- * @param board
- * @param indexes
- * @returns
+ * check if a cell group (could be either vertical,
+ * horizontal or 3x3 group) satisfies the uniqueness
+ * contraint
+ *
+ * @param board current board state
+ * @param indexes an array of size 9, containing cell index of a group
+ * @returns an array of index that violates the contraint (in other word,
+ * contain duplicate value)
  */
 function validateGroup(board: number[], indexes: number[]): Set<number> {
   const count: { [val: number]: number } = {};
