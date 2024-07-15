@@ -203,27 +203,33 @@ function arrowNavigation(idx: number, eventKey: string) {
   }
 }
 
+/**
+ * useBoardState hook return the current board state and a board state setter.
+ *
+ * The hook will persist board state to localStorage whenever board is changed.
+ * It will also return the previously persisted state if found.
+ */
 function useBoardState(id: string, puzzle: number[]) {
   const [board, setBoard] = useState(puzzle);
   const loaded = useRef<string | null>(null); // loaded puzzle id
 
   useEffect(() => {
-    if (loaded.current) return;
-
-    if (loaded.current !== id) {
-      setBoard(puzzle);
-    }
-
-    const bstr = localStorage.getItem(`board:${id}`);
-    if (!bstr) return;
-
-    setBoard(JSON.parse(bstr));
-    loaded.current = id;
-  }, [id, puzzle]);
-
-  useEffect(() => {
     localStorage.setItem(`board:${id}`, JSON.stringify(board));
   }, [id, board]);
+
+  if (loaded.current === null) {
+    const bstr = localStorage.getItem(`board:${id}`);
+    if (bstr) {
+      setBoard(JSON.parse(bstr));
+    }
+    loaded.current = id;
+  }
+
+  // when user switch to a different puzzle
+  if (loaded.current !== id) {
+    loaded.current = null;
+    setBoard(puzzle);
+  }
 
   return [board, setBoard] as const;
 }
