@@ -218,9 +218,9 @@ function useBoardState(id: string, puzzle: number[]) {
   }, [id, board]);
 
   if (loaded.current === null) {
-    const bstr = localStorage.getItem(`board:${id}`);
-    if (bstr) {
-      setBoard(JSON.parse(bstr));
+    const boardJson = localStorage.getItem(`board:${id}`);
+    if (boardJson) {
+      setBoard(JSON.parse(boardJson));
     }
     loaded.current = id;
   }
