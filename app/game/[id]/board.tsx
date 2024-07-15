@@ -101,6 +101,8 @@ function Cell(props: {
       className={`appearance-none rounded-none font-semibold text-xl flex text-center justify-center items-center border-r border-b border-neutral-300 outline-none caret-transparent ${cls}`}
       onClick={() => onClick(index)}
       value={value === EMPTY ? "" : value}
+      readOnly={!editable}
+      onChange={() => {}}
     ></input>
   );
 }
