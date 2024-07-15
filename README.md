@@ -2,7 +2,7 @@
 
 ## Setup
 
-Setup environmental variable
+Configure the following environmental variable
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
