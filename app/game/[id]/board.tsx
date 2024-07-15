@@ -43,7 +43,7 @@ export function Board(props: { id: string; puzzle: number[] }) {
   return (
     <div>
       <div
-        className="grid grid-cols-9 grid-rows-9 w-[550px] h-[550px] border-2 border-black select-none outline-none"
+        className="grid grid-cols-9 grid-rows-9 w-[552px] h-[552px] border-2 border-black select-none outline-none"
         onKeyDown={onKeyDown}
         tabIndex={0}
       >

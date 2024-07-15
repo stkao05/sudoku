@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Sudoku",
@@ -16,11 +13,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main className="flex flex-col items-center justify-center">
-          <div className="w-[550px] pt-10">
-            <h1 className="font-medium text-2xl pb-1 mb-4">
-              <Link href="/">Sudoko</Link>
+      <body className="font-mono">
+        <main className="flex flex-col items-center justify-center bg-neutral-100">
+          <div className="w-[600px] h-screen px-6 pt-4 bg-white">
+            <h1 className="font-medium text-xl mb-4">
+              <Link href="/">sudoko</Link>
             </h1>
             {children}
           </div>

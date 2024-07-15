@@ -17,12 +17,12 @@ export default async function Home() {
 
   return (
     <>
-      <div className="mb-2">Choose your game</div>
+      <div className="mb-2">choose your game</div>
       <div>
         {puzzles.map((p) => {
           return (
             <Link
-              className="flex justify-between border-b border-neutral-200 last:border-none p-2 hover:bg-neutral-100"
+              className="flex justify-between border-b border-neutral-200 last:border-none py-2 hover:bg-neutral-100"
               key={p.id}
               href={`/game/${p.id}`}
             >
