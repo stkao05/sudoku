@@ -1,7 +1,7 @@
 "use client";
 import { EMPTY } from "@/services/sudoku";
 import clsx from "clsx";
-import { KeyboardEvent, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
 export function Board(props: { id: string; puzzle: number[] }) {
   const [board, setBoard] = useBoardState(props.id, props.puzzle);
@@ -113,13 +113,17 @@ function useBoardState(id: string, puzzle: number[]) {
     setBoard(puzzle);
   }
 
-  if (loadedId.current === null) {
+  if (loadedId.current === null && typeof window !== "undefined") {
     const boardJson = localStorage.getItem(`board:${id}`);
     if (boardJson) {
       setBoard(JSON.parse(boardJson));
     }
     loadedId.current = id;
   }
+
+  useEffect(() => {
+    localStorage.setItem(`board:${id}`, JSON.stringify(board));
+  }, [id, board]);
 
   return [board, setBoard] as const;
 }

@@ -8,10 +8,6 @@ Configure the following environmental variable
 
 ## Features
 
+- A working and playable Sudoku web-based game
 - Arrow key navigation
-- Progress is automatically save within
-
-## Improvement
-
-- Game history: keep track of which game the users have played. This could be helpful to suggest new game to users
-
+- User's progress is automatically save to browser's local storage
