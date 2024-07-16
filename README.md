@@ -9,6 +9,9 @@ The following features are implemented:
 - Navigation of the board with arrow keys
 
 
+Potential improvement features (not implemented):
+- User login & game play history: it will be nice to remember which game user has played and completed and persist the history in the database.
+
 ## Setup
 
 To run the project locally:
