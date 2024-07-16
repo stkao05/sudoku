@@ -1,37 +1,29 @@
 "use client";
-import clsx from "clsx";
 import { EMPTY } from "@/services/sudoku";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import clsx from "clsx";
+import { KeyboardEvent, useRef, useState } from "react";
 
 export function Board(props: { id: string; puzzle: number[] }) {
   const [board, setBoard] = useBoardState(props.id, props.puzzle);
   const [focusIdx, setFocusIdx] = useState(-1);
 
-  const onCellClick = (index: number) => {
-    setFocusIdx(index);
-  };
-
   const isEditable = (index: number) => props.puzzle[index] === EMPTY;
+  const onCellClick = (index: number) => setFocusIdx(index);
 
   const onKeyDown = (event: KeyboardEvent) => {
     const nextIdx = arrowNavigation(focusIdx, event.key);
-    if (nextIdx !== null) {
-      setFocusIdx(nextIdx);
-    }
+    setFocusIdx(nextIdx);
 
     if (focusIdx !== -1 && isEditable(focusIdx)) {
       if (event.key === "Backspace") {
         const b = [...board];
-        b[focusIdx] = 0;
+        b[focusIdx] = EMPTY;
         setBoard(b);
-        return;
       }
-
       if (/[1-9]/.test(event.key)) {
         const b = [...board];
         b[focusIdx] = parseInt(event.key);
         setBoard(b);
-        return;
       }
     }
   };
@@ -107,8 +99,34 @@ function Cell(props: {
 }
 
 /**
- * check if every cell in the board satisfies the uniqueness
- * constraint
+ * useBoardState manage the board state - it would loaded
+ * any previously stored from localStroage and also persist
+ * the board state when there is new change
+ */
+function useBoardState(id: string, puzzle: number[]) {
+  const [board, setBoard] = useState(puzzle);
+  const loadedId = useRef<string | null>(null);
+
+  // when user switch to a different puzzle
+  if (loadedId.current !== id) {
+    loadedId.current = null;
+    setBoard(puzzle);
+  }
+
+  if (loadedId.current === null) {
+    const boardJson = localStorage.getItem(`board:${id}`);
+    if (boardJson) {
+      setBoard(JSON.parse(boardJson));
+    }
+    loadedId.current = id;
+  }
+
+  return [board, setBoard] as const;
+}
+
+/**
+ * check if every cell satisfies the uniqueness constraint
+ * (every number should be unique within a 9 cell group)
  * @returns a set of cell index of which it violate the constraint
  */
 function validate(board: number[]): Set<number> {
@@ -160,8 +178,7 @@ function validate(board: number[]): Set<number> {
  *
  * @param board current board state
  * @param indexes an array of size 9, containing cell index of a group
- * @returns an array of index that violates the contraint (in other word,
- * contain duplicate value)
+ * @returns an array of cell index, of which the cell violates the contraint
  */
 function validateGroup(board: number[], indexes: number[]): Set<number> {
   const count: { [val: number]: number } = {};
@@ -185,8 +202,10 @@ function validateGroup(board: number[], indexes: number[]): Set<number> {
   return invalidIdx;
 }
 
-function arrowNavigation(idx: number, eventKey: string) {
-  if (idx === -1) return null;
+/**
+ * @returns next focus cell index
+ */
+function arrowNavigation(idx: number, eventKey: string): number {
   switch (eventKey) {
     case "ArrowRight":
       return idx % 9 === 8 ? idx : idx + 1;
@@ -199,37 +218,6 @@ function arrowNavigation(idx: number, eventKey: string) {
     case "Escape":
       return -1;
     default:
-      return null;
+      return idx;
   }
-}
-
-/**
- * useBoardState hook return the current board state and a board state setter.
- *
- * The hook will persist board state to localStorage whenever board is changed.
- * It will also return the previously persisted state if found.
- */
-function useBoardState(id: string, puzzle: number[]) {
-  const [board, setBoard] = useState(puzzle);
-  const loaded = useRef<string | null>(null); // loaded puzzle id
-
-  useEffect(() => {
-    localStorage.setItem(`board:${id}`, JSON.stringify(board));
-  }, [id, board]);
-
-  if (loaded.current === null) {
-    const boardJson = localStorage.getItem(`board:${id}`);
-    if (boardJson) {
-      setBoard(JSON.parse(boardJson));
-    }
-    loaded.current = id;
-  }
-
-  // when user switch to a different puzzle
-  if (loaded.current !== id) {
-    loaded.current = null;
-    setBoard(puzzle);
-  }
-
-  return [board, setBoard] as const;
 }
