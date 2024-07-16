@@ -111,8 +111,9 @@ function useBoardState(id: string, puzzle: number[]) {
     localStorage.setItem(`board:${id}`, JSON.stringify(board));
   }, [id, board]);
 
+  // SSR, skip localstorage logic and return board state directly
   if (typeof window === "undefined") {
-    return [board, setBoard];
+    return [board, setBoard] as const;
   }
 
   // when user switch to a different puzzle
