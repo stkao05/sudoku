@@ -8,6 +8,7 @@ Feature set:
 
 ## Setup
 
-Configure the following environmental variable
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+The run the project locally:
+- Setup an Supabase project and an database
+- Seed the database with the query from `supabase/seed.sql`
+- And add a `.env.local` file with the following environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`

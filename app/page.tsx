@@ -2,6 +2,8 @@ import { createClient } from "@/services/supabase";
 import Link from "next/link";
 import clsx from "clsx";
 
+export const revalidate = 60;
+
 export default async function Home() {
   const supabase = createClient();
   const { data: puzzles } = await supabase
