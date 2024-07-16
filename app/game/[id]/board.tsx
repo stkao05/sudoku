@@ -107,23 +107,27 @@ function useBoardState(id: string, puzzle: number[]) {
   const [board, setBoard] = useState(puzzle);
   const loadedId = useRef<string | null>(null);
 
+  useEffect(() => {
+    localStorage.setItem(`board:${id}`, JSON.stringify(board));
+  }, [id, board]);
+
+  if (typeof window === "undefined") {
+    return [board, setBoard];
+  }
+
   // when user switch to a different puzzle
   if (loadedId.current !== id) {
     loadedId.current = null;
     setBoard(puzzle);
   }
 
-  if (loadedId.current === null && typeof window !== "undefined") {
+  if (loadedId.current === null) {
     const boardJson = localStorage.getItem(`board:${id}`);
     if (boardJson) {
       setBoard(JSON.parse(boardJson));
     }
     loadedId.current = id;
   }
-
-  useEffect(() => {
-    localStorage.setItem(`board:${id}`, JSON.stringify(board));
-  }, [id, board]);
 
   return [board, setBoard] as const;
 }
