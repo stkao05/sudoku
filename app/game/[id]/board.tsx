@@ -99,9 +99,9 @@ function Cell(props: {
 }
 
 /**
- * useBoardState manage the board state - it would loaded
- * any previously stored from localStroage and also persist
- * the board state when there is new change
+ * useBoardState hook manages the board state. It will load
+ * any previously stored state from localStorage and also persist
+ * the board state when there is a new change.
  */
 function useBoardState(id: string, puzzle: number[]) {
   const [board, setBoard] = useState(puzzle);
@@ -111,12 +111,12 @@ function useBoardState(id: string, puzzle: number[]) {
     localStorage.setItem(`board:${id}`, JSON.stringify(board));
   }, [id, board]);
 
-  // SSR, skip localstorage logic and return board state directly
+  // SSR: Skip localStorage logic and return board state directly
   if (typeof window === "undefined") {
     return [board, setBoard] as const;
   }
 
-  // when user switch to a different puzzle
+  // when user switches to a different puzzle
   if (loadedId.current !== id) {
     loadedId.current = null;
     setBoard(puzzle);
@@ -134,9 +134,9 @@ function useBoardState(id: string, puzzle: number[]) {
 }
 
 /**
- * check if every cell satisfies the uniqueness constraint
- * (every number should be unique within a 9 cell group)
- * @returns a set of cell index of which it violate the constraint
+ * Check if every cell satisfies the uniqueness constraint
+ * (every number should be unique within a 9-cell group).
+ * @returns A set of cell indices that violate the constraint.
  */
 function validate(board: number[]): Set<number> {
   const groups = [];
@@ -182,12 +182,12 @@ function validate(board: number[]): Set<number> {
 }
 
 /**
- * check if a cell group (could be either vertical, horizontal or 3x3 group)
- * satisfies the uniqueness contraint
+ * Check if a cell group (could be either vertical, horizontal, or 3x3 group)
+ * satisfies the uniqueness constraint.
  *
- * @param board current board state
- * @param indexes an array of size 9, containing cell index of a group
- * @returns an array of cell index, of which the cell violates the contraint
+ * @param board - The current board state.
+ * @param indexes - An array of size 9, containing cell indices of a group.
+ * @returns An array of cell indices that violate the constraint.
  */
 function validateGroup(board: number[], indexes: number[]): Set<number> {
   const count: { [val: number]: number } = {};
@@ -212,7 +212,8 @@ function validateGroup(board: number[], indexes: number[]): Set<number> {
 }
 
 /**
- * @returns next focus cell index
+ * Determines the next focus cell index based on arrow key navigation.
+ * @returns The next focus cell index
  */
 function arrowNavigation(idx: number, eventKey: string): number {
   switch (eventKey) {
