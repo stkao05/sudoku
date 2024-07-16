@@ -1,14 +1,17 @@
 # Sudoku 
 
-Feature set:
+This repository contains a basic Sudoku web game implementation, following the [assignment instructions](https://you.ashbyhq.com/mobbin.com/assignment/ae1daa8e-b30e-496c-b510-1c8c03c0bb27).
+
+The following features are implemented:
+- Loading Sudoku puzzles from hard-coded puzzles stored on Supabase
 - A working and playable Sudoku web-based game
-- User's progress is automatically saved to browser's local storage
-- Arrow key navigation
+- Automatic saving of the user's progress to the browser's local storage
+- Navigation of the board with arrow keys
 
 
 ## Setup
 
-The run the project locally:
-- Setup an Supabase project and an database
+To run the project locally:
+- Set up a Supabase project and a database
 - Seed the database with the query from `supabase/seed.sql`
-- And add a `.env.local` file with the following environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- Add a `.env.local` file with the following environment variables: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
